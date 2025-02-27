@@ -14,14 +14,14 @@ class ContaCorrente():
     def __init__(self,nome,cpf, agencia, num_conta):
         self._nome = nome # Atributo privado
         self.cpf = cpf
-        self.saldo = 0 # Atributo interno
+        self._saldo = 0 # Atributo interno
         self.limite = None # Atributo interno
         self.agencia = agencia
         self.num_conta = num_conta
         self.transacoes = [] # Atributo interno
 
     def registro_deTransacoes(self,valor):
-        self.transacoes.append((valor, self.saldo, ContaCorrente._data_eHora()))
+        self.transacoes.append((valor, self._saldo, ContaCorrente._data_eHora()))
         pass
 
     def _limite_daConta(self): # Método privado
@@ -29,7 +29,7 @@ class ContaCorrente():
         return self.limite
 
     def consultar_Saldo(self):
-        print('Seu saldo atual é de R${:,.2f}'.format(self.saldo))
+        print('Seu saldo atual é de R${:,.2f}'.format(self._saldo))
         pass
 
     def consultar_Transacoes(self):
@@ -39,21 +39,21 @@ class ContaCorrente():
             print(transacao)
 
     def sacar_Dinheiro(self, valor):
-        if (self.saldo - valor < self._limite_daConta()):
+        if (self._saldo - valor < self._limite_daConta()):
             print('Você não tem saldo suficiente para sacar esse valor.')
             self.consultar_Saldo()
         else:
-            self.saldo -= valor
+            self._saldo -= valor
             self.registro_deTransacoes(-valor)
             self.consultar_Saldo()
 
     def depositar_Dinheiro(self,valor):
-        self.saldo += valor
+        self._saldo += valor
         self.registro_deTransacoes(valor)
         pass
 
     def transferir(self, valor, conta_destinada):
-        self.saldo -= valor
+        self._saldo -= valor
         conta_destinada.saldo += valor
         self.registro_deTransacoes(valor)
         conta_destinada.registro_deTransacoes(valor)
